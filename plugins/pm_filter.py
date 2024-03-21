@@ -24,6 +24,19 @@ async def auto_pm_fill(b, m):
         else: await pm_AutoFilter(b, m)
     else: return 
 
+@Client.on_message(filters.private & filters.text & filters.incoming)
+async def pm_text(bot, message):
+    content = message.text
+    user = message.from_user.first_name
+    user_id = message.from_user.id
+    if content.startswith("/") or content.startswith("#"): return  # ignore commands and hashtags
+    if user_id in ADMINS: return # ignore admins
+    await message.reply_text(
+         text=f"<b>Hey {user},\n\nI Dᴏɴ'ᴛ Wᴏʀᴋ Iɴ Pᴍ.\n Rᴇǫᴜᴇsᴛ Yᴏᴜʀ Mᴏᴠɪᴇ Oʀ Sᴇʀɪᴇs Iɴ Mʏ Pʀɪᴠᴀᴛᴇ Gʀᴏᴜᴘ 👥 ▬▬▬▬▬▬▬▬▬▬▬▬▬▬ Now Available In 🇫‌🇷‌🇪‌🇪‌ ▬▬▬▬▬▬▬▬▬▬▬▬▬▬</b>",
+         reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("🔰 REQUEST GROUP 🔰", url="https://t.me/+eyge5gylO9xhMzFl")]])
+)
+
+
 @Client.on_callback_query(filters.create(lambda _, __, query: query.data.startswith("pmnext")))
 async def pm_next_page(bot, query):
     ident, req, key, offset = query.data.split("_")
